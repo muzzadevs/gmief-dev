@@ -4,187 +4,148 @@ import { useNavigate } from 'react-router-dom';
 import { Region, regions } from '../lib/mockData';
 
 const SpainMap: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [hoveredRegion, setHoveredRegion] = useState<Region | null>(null);
-
+  const mapImage = "public/lovable-uploads/11336ff5-f7d7-4857-be3a-ad7cbc5023f0.png";
+  
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const resizeCanvas = () => {
-      const container = containerRef.current;
-      if (!container) return;
+    const container = containerRef.current;
+    if (!container) return;
+    
+    // Create an overlay for each region
+    const createRegionOverlays = () => {
+      // Remove any existing overlays
+      const existingOverlays = container.querySelectorAll('.region-overlay');
+      existingOverlays.forEach(overlay => overlay.remove());
       
-      // Set canvas dimensions to match container
-      canvas.width = container.clientWidth;
-      canvas.height = container.clientHeight;
-      
-      // Redraw the map
-      drawMap();
-    };
-
-    const drawMap = () => {
-      if (!ctx) return;
-
-      // Clear the canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Set base background for Spain
-      ctx.fillStyle = '#f3f4f6';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Scale factor for responsiveness
-      const scaleX = canvas.width / 450;
-      const scaleY = canvas.height / 350;
-
-      // Draw each region
+      // Create new overlays based on current container size
       regions.forEach(region => {
-        ctx.beginPath();
+        const overlay = document.createElement('div');
+        overlay.className = `region-overlay absolute ${
+          region === hoveredRegion 
+            ? 'bg-primary/30 border-primary' 
+            : 'bg-blue-300/30 hover:bg-blue-300/40 border-blue-400/50'
+        } backdrop-blur-sm border-2 cursor-pointer transition-all duration-200`;
         
-        // Scale coordinates to fit canvas
-        region.pathCoordinates.forEach((coord, i) => {
-          const [x, y] = coord;
-          const scaledX = x * scaleX;
-          const scaledY = y * scaleY;
-          
-          if (i === 0) {
-            ctx.moveTo(scaledX, scaledY);
-          } else {
-            ctx.lineTo(scaledX, scaledY);
+        // Calculate position based on container dimensions
+        const containerWidth = container.offsetWidth;
+        const containerHeight = container.offsetHeight;
+        
+        // This is a simple example - in a real app, you'd want to precisely map coordinates
+        // based on actual map regions, possibly using SVG or canvas with proper coordinates
+        let styles: Record<string, string> = {};
+        
+        switch(region.id) {
+          case "norte":
+            styles = {
+              top: '15%',
+              left: '45%',
+              width: '30%',
+              height: '25%',
+              borderRadius: '40% 60% 50% 50% / 40% 50% 50% 60%'
+            };
+            break;
+          case "centro":
+            styles = {
+              top: '35%',
+              left: '40%',
+              width: '30%',
+              height: '25%',
+              borderRadius: '40% 50% 30% 60% / 40% 50% 40% 50%'
+            };
+            break;
+          case "este":
+            styles = {
+              top: '25%',
+              left: '65%',
+              width: '25%',
+              height: '30%',
+              borderRadius: '60% 70% 40% 30% / 50% 60% 40% 50%'
+            };
+            break;
+          case "sur":
+            styles = {
+              top: '60%',
+              left: '45%',
+              width: '35%',
+              height: '25%',
+              borderRadius: '40% 50% 60% 50% / 30% 60% 70% 40%'
+            };
+            break;
+          case "oeste":
+            styles = {
+              top: '30%',
+              left: '15%',
+              width: '25%',
+              height: '30%',
+              borderRadius: '40% 60% 50% 40% / 30% 50% 60% 70%'
+            };
+            break;
+        }
+        
+        // Apply styles
+        Object.entries(styles).forEach(([key, value]) => {
+          overlay.style[key as any] = value;
+        });
+        
+        // Add event listeners
+        overlay.addEventListener('mouseenter', () => {
+          setHoveredRegion(region);
+          if (tooltipRef.current) {
+            tooltipRef.current.innerHTML = region.name;
+            tooltipRef.current.classList.add('visible');
           }
         });
         
-        // Close the path
-        ctx.closePath();
+        overlay.addEventListener('mouseleave', () => {
+          setHoveredRegion(null);
+          if (tooltipRef.current) {
+            tooltipRef.current.classList.remove('visible');
+          }
+        });
         
-        // Fill with color (highlight if hovered)
-        ctx.fillStyle = region === hoveredRegion ? '#1E3A8A' : '#93C5FD';
-        ctx.fill();
+        overlay.addEventListener('mousemove', (e) => {
+          if (tooltipRef.current) {
+            tooltipRef.current.style.left = `${e.clientX - container.getBoundingClientRect().left + 10}px`;
+            tooltipRef.current.style.top = `${e.clientY - container.getBoundingClientRect().top + 10}px`;
+          }
+        });
         
-        // Draw border
-        ctx.strokeStyle = '#1E3A8A';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        
-        // Add region label
-        const centerX = region.pathCoordinates.reduce((sum, [x]) => sum + x, 0) / region.pathCoordinates.length * scaleX;
-        const centerY = region.pathCoordinates.reduce((sum, [_, y]) => sum + y, 0) / region.pathCoordinates.length * scaleY;
-        
-        ctx.font = '14px Poppins, sans-serif';
-        ctx.fillStyle = region === hoveredRegion ? '#ffffff' : '#1E3A8A';
-        ctx.textAlign = 'center';
-        ctx.fillText(region.name, centerX, centerY);
-      });
-    };
-
-    // Check if point is inside a region
-    const isPointInRegion = (x: number, y: number, region: Region): boolean => {
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return false;
-      
-      const scaleX = canvas.width / 450;
-      const scaleY = canvas.height / 350;
-      
-      ctx.beginPath();
-      region.pathCoordinates.forEach((coord, i) => {
-        const [coordX, coordY] = coord;
-        const scaledX = coordX * scaleX;
-        const scaledY = coordY * scaleY;
-        
-        if (i === 0) {
-          ctx.moveTo(scaledX, scaledY);
-        } else {
-          ctx.lineTo(scaledX, scaledY);
-        }
-      });
-      ctx.closePath();
-      
-      return ctx.isPointInPath(x, y);
-    };
-
-    // Handle mouse move for hover effects
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!canvas) return;
-      
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      // Check which region is being hovered
-      let hovered: Region | null = null;
-      for (const region of regions) {
-        if (isPointInRegion(x, y, region)) {
-          hovered = region;
-          break;
-        }
-      }
-      
-      // Update hovered region state
-      setHoveredRegion(hovered);
-      
-      // Update tooltip
-      const tooltip = tooltipRef.current;
-      if (tooltip) {
-        if (hovered) {
-          tooltip.innerHTML = hovered.name;
-          tooltip.style.left = `${e.clientX - rect.left + 10}px`;
-          tooltip.style.top = `${e.clientY - rect.top + 10}px`;
-          tooltip.classList.add('visible');
-        } else {
-          tooltip.classList.remove('visible');
-        }
-      }
-      
-      // Update cursor style
-      canvas.style.cursor = hovered ? 'pointer' : 'default';
-      
-      // Redraw the map with hover effect
-      drawMap();
-    };
-
-    // Handle click on regions
-    const handleClick = (e: MouseEvent) => {
-      if (!canvas) return;
-      
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      // Check which region was clicked
-      for (const region of regions) {
-        if (isPointInRegion(x, y, region)) {
+        overlay.addEventListener('click', () => {
           navigate(`/region/${region.id}`);
-          break;
-        }
-      }
+        });
+        
+        container.appendChild(overlay);
+      });
     };
-
-    // Initial draw
-    resizeCanvas();
     
-    // Add event listeners
-    window.addEventListener('resize', resizeCanvas);
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('click', handleClick);
+    // Initial creation
+    createRegionOverlays();
+    
+    // Re-create on resize
+    const handleResize = () => {
+      createRegionOverlays();
+    };
+    
+    window.addEventListener('resize', handleResize);
     
     // Cleanup
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('click', handleClick);
+      window.removeEventListener('resize', handleResize);
     };
   }, [navigate, hoveredRegion]);
 
   return (
-    <div ref={containerRef} className="spain-map-container">
-      <canvas ref={canvasRef} className="spain-map-canvas" />
-      <div ref={tooltipRef} className="map-tooltip" />
+    <div ref={containerRef} className="spain-map-container relative rounded-xl overflow-hidden shadow-lg">
+      <img 
+        src={mapImage} 
+        alt="Mapa de España" 
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-blue-500/5 backdrop-blur-[1px]"></div>
+      <div ref={tooltipRef} className="map-tooltip glass text-primary-foreground z-20"></div>
     </div>
   );
 };

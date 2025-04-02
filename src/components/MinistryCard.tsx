@@ -2,24 +2,24 @@
 import React from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Ministry } from '../lib/mockData';
-import { User, Calendar, BookOpen } from 'lucide-react';
+import { User, Calendar, BookOpen, Info } from 'lucide-react';
 
 interface MinistryCardProps {
   ministry: Ministry;
 }
 
 const MinistryCard: React.FC<MinistryCardProps> = ({ ministry }) => {
-  // Use the provided avatar image
-  const avatarUrl = "public/lovable-uploads/718c7dbe-684b-4512-ac45-eea14329ab06.png";
+  // Default avatar URL
+  const avatarUrl = ministry.photoUrl || '/placeholder.svg';
 
   return (
-    <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow backdrop-blur-sm bg-white/70 border-white/30">
+    <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
       <CardHeader className="p-0">
-        <div className="bg-primary/10 p-4 flex justify-center backdrop-blur-sm">
-          <div className="w-24 h-24 rounded-full overflow-hidden bg-white border-4 border-white/80 shadow-lg">
+        <div className="bg-primary/10 p-4 flex justify-center">
+          <div className="w-24 h-24 rounded-full overflow-hidden bg-white border-4 border-white shadow-md">
             <img 
               src={avatarUrl} 
-              alt={`Avatar de ${ministry.name}`} 
+              alt={`Foto de ${ministry.name}`} 
               className="w-full h-full object-cover"
             />
           </div>

@@ -10,10 +10,10 @@ const Index: React.FC = () => {
   const isMobile = useIsMobile();
   
   return (
-    <Layout title="Zonas de España">
+    <Layout title="Zonas">
       <div className="max-w-6xl mx-auto">
-        <p className="text-center text-gray-600 mb-8">
-          Bienvenido al Sistema de Gestión de Ministerios e Iglesias de España y sus Federaciones.
+        <p className="text-center text-gray-600 mb-8 ">
+          Bienvenido al Gestor de Ministerios de la Iglesia Evangélica Filadefia.
           Seleccione una zona en el mapa o en el menú desplegable para comenzar.
         </p>
         

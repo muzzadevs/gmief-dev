@@ -15,7 +15,7 @@ const MinistryCard: React.FC<MinistryCardProps> = ({ ministry }) => {
   return (
     <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
       <CardHeader className="p-0">
-        <div className="bg-primary/10 p-4 flex justify-center">
+        <div className="bg-primary p-4 flex justify-center">
           <div className="w-24 h-24 rounded-full overflow-hidden bg-white border-4 border-white shadow-md">
             <img 
               src={avatarUrl} 

@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -43,8 +43,50 @@
   }
 
   body {
-    @apply bg-background text-foreground font-poppins;
+    @apply bg-background text-foreground;
+    font-family: 'Lato', sans-serif;
   }
+}
+
+/* Glassmorphism effects */
+.glass {
+  @apply backdrop-blur-md bg-white/30 border border-white/20 shadow-lg;
+}
+
+.card-glass {
+  @apply glass rounded-xl transition-all hover:bg-white/40 hover:shadow-xl;
+}
+
+/* Animated gradient for navbar */
+.navbar-gradient {
+  background: linear-gradient(270deg, #1a365d, #2a4365, #2c5282);
+  background-size: 600% 600%;
+  animation: gradientBackground 15s ease infinite;
+}
+
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Card gradients */
+.card-gradient-blue {
+  background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 100%);
+}
+
+.card-gradient-purple {
+  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%);
+}
+
+.card-gradient-indigo {
+  background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%);
 }
 
 .spain-map-container {
@@ -53,6 +95,7 @@
   height: 400px;
   border-radius: 0.5rem;
   overflow: hidden;
+  @apply glass;
 }
 
 .spain-map-canvas {

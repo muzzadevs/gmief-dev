@@ -55,7 +55,7 @@ export default {
 				}
 			},
 			fontFamily: {
-				poppins: ['Poppins', 'sans-serif'],
+				leto: ['Lato', 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Breadcrumb } from './Breadcrumb';
+import { Link } from 'react-router-dom';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,11 +11,12 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, title, breadcrumbs = [] }) => {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-primary text-white shadow-md">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+      <header className="navbar-gradient text-white shadow-lg backdrop-blur-lg bg-opacity-90">
         <div className="container mx-auto py-4 px-4 md:px-6">
-          <h1 className="text-2xl font-semibold">GMIEF</h1>
-          <p className="text-sm opacity-80">Gestión de Ministerios e Iglesias de España y sus Federaciones</p>
+          <Link to="/" className="inline-block cursor-pointer hover:opacity-90 transition-opacity">
+            <h1 className="text-3xl font-leto font-semibold tracking-wide">GMIEF</h1>
+          </Link>
         </div>
       </header>
 
@@ -22,16 +24,10 @@ const Layout: React.FC<LayoutProps> = ({ children, title, breadcrumbs = [] }) =>
         {breadcrumbs.length > 0 && <Breadcrumb items={breadcrumbs} />}
         
         <div className="mt-6">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">{title}</h2>
+          <h2 className="text-3xl font-leto font-bold text-gray-800 mb-6">{title}</h2>
           {children}
         </div>
       </main>
-
-      <footer className="bg-gray-800 text-white py-4 mt-12">
-        <div className="container mx-auto px-4 md:px-6 text-center text-sm">
-          &copy; {new Date().getFullYear()} GMIEF - Todos los derechos reservados
-        </div>
-      </footer>
     </div>
   );
 };

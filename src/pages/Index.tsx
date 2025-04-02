@@ -9,16 +9,16 @@ const Index: React.FC = () => {
     <Layout title="Zonas de España">
       <div className="space-y-10">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-gray-600 mb-8">
+          <p className="text-center text-gray-600 mb-8 glass p-4 rounded-lg">
             Bienvenido al Sistema de Gestión de Ministerios e Iglesias de España y sus Federaciones.
             Seleccione una zona en el mapa o en el menú desplegable para comenzar.
           </p>
           
-          <div className="mb-10">
+          <div className="mb-10 glass p-4 rounded-xl">
             <SpainMap />
           </div>
           
-          <div className="mt-10">
+          <div className="mt-10 glass p-6 rounded-xl">
             <RegionSelector />
           </div>
         </div>

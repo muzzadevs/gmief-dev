@@ -1,13 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
-const Index = () => {
+import React from 'react';
+import Layout from '../components/Layout';
+import SpainMap from '../components/SpainMap';
+import RegionSelector from '../components/RegionSelector';
+
+const Index: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <Layout title="Zonas de España">
+      <div className="space-y-10">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-center text-gray-600 mb-8">
+            Bienvenido al Sistema de Gestión de Ministerios e Iglesias de España y sus Federaciones.
+            Seleccione una zona en el mapa o en el menú desplegable para comenzar.
+          </p>
+          
+          <div className="mb-10">
+            <SpainMap />
+          </div>
+          
+          <div className="mt-10">
+            <RegionSelector />
+          </div>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Ministry } from '../lib/mockData';
-import { User, Calendar, BookOpen, MessageCircle } from 'lucide-react';
+import { User, Calendar, BookOpen } from 'lucide-react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ObservationProps {
@@ -44,7 +44,7 @@ const MinistryDetailsModal: React.FC<MinistryDetailsModalProps> = ({ ministry, o
           </DialogTitle>
         </DialogHeader>
         
-        <ScrollArea className="flex-grow pr-4">
+        <ScrollArea className="flex-grow pr-4 overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-4">
             {/* Profile Section */}
             <div className="md:col-span-1">
@@ -112,4 +112,3 @@ const MinistryDetailsModal: React.FC<MinistryDetailsModalProps> = ({ ministry, o
 };
 
 export default MinistryDetailsModal;
-

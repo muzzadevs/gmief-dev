@@ -18,7 +18,7 @@ export interface Ministry {
   churchId: string;
   name: string;
   lastName: string;
-  alias?: string;
+  alias: string; // Now required for all
   position: string;
   approvalYear: number;
   photoUrl?: string;
@@ -128,13 +128,14 @@ export const churches: Church[] = [
   }
 ];
 
-// Mock data for ministries (people)
+// Mock data for ministries (only men with aliases)
 export const ministries: Ministry[] = [
   {
     id: "min-1",
     churchId: "iglesia-norte-1",
     name: "Antonio",
     lastName: "Rodríguez García",
+    alias: "Toño",
     position: "Pastor Principal",
     approvalYear: 2005,
     extraInfo: "Especializado en consejería familiar."
@@ -142,18 +143,19 @@ export const ministries: Ministry[] = [
   {
     id: "min-2",
     churchId: "iglesia-norte-1",
-    name: "María",
+    name: "Miguel",
     lastName: "González López",
-    alias: "Mari",
-    position: "Coordinadora de Educación",
+    alias: "Mike",
+    position: "Coordinador de Educación",
     approvalYear: 2010,
-    extraInfo: "Maestra de profesión."
+    extraInfo: "Profesor de teología."
   },
   {
     id: "min-3",
     churchId: "iglesia-norte-2",
     name: "Carlos",
     lastName: "Fernández Martín",
+    alias: "Charly",
     position: "Pastor Principal",
     approvalYear: 2008,
     extraInfo: "Anteriormente misionero en Latinoamérica."
@@ -161,9 +163,10 @@ export const ministries: Ministry[] = [
   {
     id: "min-4",
     churchId: "iglesia-centro-1",
-    name: "Elena",
+    name: "Eduardo",
     lastName: "Sánchez Ruiz",
-    position: "Pastora de Jóvenes",
+    alias: "Edu",
+    position: "Pastor de Jóvenes",
     approvalYear: 2015,
     extraInfo: "Dirige el ministerio de música también."
   },
@@ -172,6 +175,7 @@ export const ministries: Ministry[] = [
     churchId: "iglesia-centro-1",
     name: "David",
     lastName: "López Vázquez",
+    alias: "Davo",
     position: "Anciano",
     approvalYear: 2003,
     extraInfo: "Responsable de las finanzas."
@@ -179,11 +183,12 @@ export const ministries: Ministry[] = [
   {
     id: "min-6",
     churchId: "iglesia-centro-2",
-    name: "Raquel",
+    name: "Roberto",
     lastName: "Martínez Silva",
-    position: "Pastora Principal",
+    alias: "Berto",
+    position: "Pastor Principal",
     approvalYear: 2012,
-    extraInfo: "Autora de varios libros de teología práctica."
+    extraInfo: "Autor de varios libros de teología práctica."
   },
   {
     id: "min-7",
@@ -198,11 +203,12 @@ export const ministries: Ministry[] = [
   {
     id: "min-8",
     churchId: "iglesia-este-2",
-    name: "Lucía",
+    name: "Luis",
     lastName: "Torres Navarro",
-    position: "Pastora de Familia",
+    alias: "Lucho",
+    position: "Pastor de Familia",
     approvalYear: 2014,
-    extraInfo: "Psicóloga de profesión."
+    extraInfo: "Psicólogo de profesión."
   },
   {
     id: "min-9",
@@ -217,9 +223,10 @@ export const ministries: Ministry[] = [
   {
     id: "min-10",
     churchId: "iglesia-sur-2",
-    name: "Alicia",
+    name: "Alberto",
     lastName: "Romero Sanz",
-    position: "Coordinadora de Misiones",
+    alias: "Beto",
+    position: "Coordinador de Misiones",
     approvalYear: 2011,
     extraInfo: "Ha servido en más de 10 países."
   },
@@ -236,11 +243,12 @@ export const ministries: Ministry[] = [
   {
     id: "min-12",
     churchId: "iglesia-oeste-2",
-    name: "Beatriz",
+    name: "Javier",
     lastName: "Jiménez Reyes",
-    position: "Directora de Alabanza",
+    alias: "Javi",
+    position: "Director de Alabanza",
     approvalYear: 2013,
-    extraInfo: "Compositora de música cristiana."
+    extraInfo: "Compositor de música cristiana."
   }
 ];
 

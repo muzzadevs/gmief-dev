@@ -44,7 +44,7 @@ const MinistryDetailsModal: React.FC<MinistryDetailsModalProps> = ({ ministry, o
           </DialogTitle>
         </DialogHeader>
         
-        <ScrollArea className="flex-grow pr-4 overflow-y-auto">
+        <ScrollArea className="flex-grow pr-4 scrollbar-none">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-4">
             {/* Profile Section */}
             <div className="md:col-span-1">

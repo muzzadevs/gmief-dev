@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Ministry } from '../lib/mockData';
 import { User, Calendar, BookOpen, MessageCircle } from 'lucide-react';
-import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ObservationProps {
@@ -103,20 +102,6 @@ const MinistryDetailsModal: React.FC<MinistryDetailsModalProps> = ({ ministry, o
                     </div>
                   ))}
                 </div>
-                
-                <div className="pt-4">
-                  <h4 className="font-medium text-gray-700 mb-2 flex items-center">
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    Nueva Observación
-                  </h4>
-                  <Textarea 
-                    placeholder="Escribe una nueva observación..." 
-                    className="w-full" 
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Esta funcionalidad estará disponible próximamente.
-                  </p>
-                </div>
               </div>
             </div>
           </div>
@@ -127,3 +112,4 @@ const MinistryDetailsModal: React.FC<MinistryDetailsModalProps> = ({ ministry, o
 };
 
 export default MinistryDetailsModal;
+

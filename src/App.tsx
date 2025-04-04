@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import RegionPage from "./pages/RegionPage";
+import SubzonaPage from "./pages/SubzonaPage";
 import ChurchPage from "./pages/ChurchPage";
 import NotFound from "./pages/NotFound";
 
@@ -19,7 +19,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/region/:regionId" element={<RegionPage />} />
+          <Route path="/subzona/:subzonaId" element={<SubzonaPage />} />
           <Route path="/church/:churchId" element={<ChurchPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

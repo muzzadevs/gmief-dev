@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getZonas } from '../api/zonasApi';
@@ -72,7 +71,10 @@ const SubzonasPage: React.FC = () => {
 
   const createMutation = useMutation({
     mutationFn: (data: Omit<Subzone, 'id'>) => {
-      return createSubzona({ ...data, zona_id: parseInt(data.zona_id as unknown as string) });
+      return createSubzona({ 
+        ...data, 
+        zona_id: typeof data.zona_id === 'string' ? parseInt(data.zona_id) : data.zona_id 
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['subzonas'] });
@@ -150,15 +152,24 @@ const SubzonasPage: React.FC = () => {
     const form = useForm<FormValues>({
       defaultValues: {
         nombre: subzona?.nombre || '',
-        zona_id: subzona?.zona_id.toString() || '',
+        zona_id: subzona?.zona_id ? subzona.zona_id.toString() : '',
       },
     });
   
     const onSubmit = (data: FormValues) => {
       if (subzona) {
-        updateMutation.mutate({ id: subzona.id, data });
+        updateMutation.mutate({ 
+          id: subzona.id, 
+          data: {
+            ...data,
+            zona_id: parseInt(data.zona_id)
+          } 
+        });
       } else {
-        createMutation.mutate(data as unknown as Omit<Subzone, 'id'>);
+        createMutation.mutate({
+          nombre: data.nombre,
+          zona_id: parseInt(data.zona_id)
+        });
       }
     };
   
@@ -315,7 +326,6 @@ const SubzonasPage: React.FC = () => {
         )}
       </div>
 
-      {/* Diálogo para crear nueva subzona */}
       <Dialog open={openNewDialog} onOpenChange={setOpenNewDialog}>
         <DialogContent>
           <DialogHeader>
@@ -325,7 +335,6 @@ const SubzonasPage: React.FC = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Diálogo para editar subzona */}
       <Dialog open={!!editingSubzona} onOpenChange={(open) => !open && setEditingSubzona(undefined)}>
         <DialogContent>
           <DialogHeader>
@@ -337,7 +346,6 @@ const SubzonasPage: React.FC = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Diálogo para confirmar eliminación */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>

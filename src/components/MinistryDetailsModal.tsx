@@ -1,34 +1,39 @@
 
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { User, Calendar, BookOpen, Phone, Mail } from 'lucide-react';
+import { Ministry } from '../lib/mockData';
+import { User, Calendar, BookOpen } from 'lucide-react';
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Ministerio, fetchObservacionesByMinisterio, fetchCargosByMinisterio } from '../lib/api';
+
+interface ObservationProps {
+  text: string;
+  date: string;
+  author?: string;
+}
 
 interface MinistryDetailsModalProps {
-  ministry: Ministerio;
+  ministry: Ministry;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 const MinistryDetailsModal: React.FC<MinistryDetailsModalProps> = ({ ministry, open, onOpenChange }) => {
-  // Fetch observations for this minister
-  const { data: observations = [] } = useQuery({
-    queryKey: ['observations', ministry.id],
-    queryFn: () => fetchObservacionesByMinisterio(ministry.id),
-    enabled: open,
-  });
-  
-  // Fetch cargos for this minister
-  const { data: cargos = [] } = useQuery({
-    queryKey: ['cargos', ministry.id],
-    queryFn: () => fetchCargosByMinisterio(ministry.id),
-    enabled: open,
-  });
+  // Mock observations - in the future, these would come from a database
+  const [observations] = useState<ObservationProps[]>([
+    {
+      text: `${ministry.name} ha mostrado un excepcional liderazgo en su rol como ${ministry.position}. Su dedicación a la comunidad y su capacidad para inspirar a otros es notable.`,
+      date: "2024-03-15",
+      author: "Coordinador Regional"
+    },
+    {
+      text: "Participó activamente en el último retiro espiritual, liderando varias sesiones de oración y estudio bíblico.",
+      date: "2024-02-22",
+      author: "Equipo de Formación"
+    }
+  ]);
   
   // Default avatar URL
-  const avatarUrl = '/placeholder.svg';
+  const avatarUrl = ministry.photoUrl || '/placeholder.svg';
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -47,13 +52,13 @@ const MinistryDetailsModal: React.FC<MinistryDetailsModalProps> = ({ ministry, o
                 <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-primary shadow-md">
                   <img 
                     src={avatarUrl} 
-                    alt={`Foto de ${ministry.nombre}`} 
+                    alt={`Foto de ${ministry.name}`} 
                     className="w-full h-full object-cover"
                   />
                 </div>
                 
                 <h2 className="text-2xl font-bold text-center">
-                  {ministry.nombre} {ministry.apellidos}
+                  {ministry.name} {ministry.lastName}
                 </h2>
                 
                 {ministry.alias && (
@@ -63,27 +68,18 @@ const MinistryDetailsModal: React.FC<MinistryDetailsModalProps> = ({ ministry, o
                 <div className="w-full space-y-3 bg-gray-50 p-4 rounded-lg">
                   <div className="flex items-center">
                     <User className="h-5 w-5 text-primary mr-3" />
-                    <span>
-                      {cargos.map(cargo => cargo.cargo).join(', ')}
-                    </span>
+                    <span>{ministry.position}</span>
                   </div>
                   
                   <div className="flex items-center">
                     <Calendar className="h-5 w-5 text-primary mr-3" />
-                    <span>Aprobado en {ministry.aprob}</span>
+                    <span>Aprobado en {ministry.approvalYear}</span>
                   </div>
                   
-                  {ministry.telefono && (
-                    <div className="flex items-center">
-                      <Phone className="h-5 w-5 text-primary mr-3" />
-                      <span>{ministry.telefono}</span>
-                    </div>
-                  )}
-                  
-                  {ministry.email && (
-                    <div className="flex items-center">
-                      <Mail className="h-5 w-5 text-primary mr-3" />
-                      <span className="break-all">{ministry.email}</span>
+                  {ministry.extraInfo && (
+                    <div className="flex items-start">
+                      <BookOpen className="h-5 w-5 text-primary mr-3 mt-0.5" />
+                      <span className="text-gray-700">{ministry.extraInfo}</span>
                     </div>
                   )}
                 </div>
@@ -96,17 +92,15 @@ const MinistryDetailsModal: React.FC<MinistryDetailsModalProps> = ({ ministry, o
                 <h3 className="text-xl font-semibold border-b pb-2">Observaciones</h3>
                 
                 <div className="space-y-4">
-                  {observations.length > 0 ? (
-                    observations.map((obs, index) => (
-                      <div key={index} className="bg-white p-4 rounded-lg shadow-sm border">
-                        <p className="mt-2 text-gray-600">{obs.observacion}</p>
+                  {observations.map((obs, index) => (
+                    <div key={index} className="bg-white p-4 rounded-lg shadow-sm border">
+                      <div className="flex justify-between items-start">
+                        <p className="text-sm font-medium text-gray-700">{obs.author}</p>
+                        <span className="text-xs text-gray-500">{obs.date}</span>
                       </div>
-                    ))
-                  ) : (
-                    <div className="text-center p-6 bg-gray-50 rounded-lg">
-                      <p className="text-gray-500">No hay observaciones registradas.</p>
+                      <p className="mt-2 text-gray-600">{obs.text}</p>
                     </div>
-                  )}
+                  ))}
                 </div>
               </div>
             </div>

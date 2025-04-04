@@ -2,18 +2,12 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import SpainMap from '../components/SpainMap';
-import ZoneSelector from '../components/ZoneSelector';
+import RegionSelector from '../components/RegionSelector';
 import { useIsMobile } from '../hooks/use-mobile';
 import { AspectRatio } from '../components/ui/aspect-ratio';
-import { useQuery } from '@tanstack/react-query';
-import { fetchZonas } from '../lib/api';
 
 const Index: React.FC = () => {
   const isMobile = useIsMobile();
-  const { data: zones = [], isLoading } = useQuery({
-    queryKey: ['zones'],
-    queryFn: fetchZonas
-  });
   
   return (
     <Layout title="Zonas">
@@ -27,7 +21,7 @@ const Index: React.FC = () => {
           {/* On mobile: Selector first, then map */}
           {isMobile && (
             <div className="w-full">
-              <ZoneSelector />
+              <RegionSelector />
             </div>
           )}
           
@@ -43,7 +37,7 @@ const Index: React.FC = () => {
           {/* On desktop: Selector on the right */}
           {!isMobile && (
             <div className="col-span-1 flex items-center">
-              <ZoneSelector />
+              <RegionSelector />
             </div>
           )}
         </div>

@@ -25,46 +25,34 @@ export interface Ministry {
   extraInfo?: string;
 }
 
-// Datos actualizados para las regiones de España
+// Data for Spain's regions
 export const regions: Region[] = [
   {
     id: "norte",
     name: "Norte",
-    pathCoordinates: [
-      [50, 30], [150, 20], [250, 30], [300, 80], [200, 100], [100, 90]
-    ]
+    pathCoordinates: [[50, 50], [150, 30], [200, 70], [180, 120], [80, 100]]
   },
   {
     id: "centro",
     name: "Centro",
-    pathCoordinates: [
-      [100, 90], [200, 100], [300, 80], [350, 150], [250, 200], [150, 180]
-    ]
+    pathCoordinates: [[180, 120], [250, 100], [300, 150], [250, 200], [180, 180]]
   },
   {
     id: "este",
     name: "Este",
-    pathCoordinates: [
-      [300, 80], [400, 60], [450, 150], [400, 250], [350, 150]
-    ]
+    pathCoordinates: [[300, 80], [350, 50], [400, 100], [350, 150], [300, 120]]
   },
   {
     id: "sur",
     name: "Sur",
-    pathCoordinates: [
-      [150, 180], [250, 200], [350, 150], [400, 250], [300, 300], [200, 280]
-    ]
+    pathCoordinates: [[180, 180], [250, 200], [280, 250], [200, 280], [150, 230]]
   },
   {
     id: "oeste",
     name: "Oeste",
-    pathCoordinates: [
-      [50, 30], [100, 90], [150, 180], [200, 280], [100, 250], [30, 150]
-    ]
+    pathCoordinates: [[50, 120], [130, 110], [150, 180], [100, 220], [40, 180]]
   }
 ];
-
-
 
 // Mock data for churches
 export const churches: Church[] = [
@@ -154,87 +142,6 @@ export const ministries: Ministry[] = [
   },
   {
     id: "min-2",
-    churchId: "iglesia-norte-1",
-    name: "Miguel",
-    lastName: "González López",
-    alias: "Mike",
-    position: "Coordinador de Educación",
-    approvalYear: 2010,
-    extraInfo: "Profesor de teología."
-  },{
-    id: "min-21",
-    churchId: "iglesia-norte-1",
-    name: "Miguel",
-    lastName: "González López",
-    alias: "Mike",
-    position: "Coordinador de Educación",
-    approvalYear: 2010,
-    extraInfo: "Profesor de teología."
-  },{
-    id: "min-22",
-    churchId: "iglesia-norte-1",
-    name: "Miguel",
-    lastName: "González López",
-    alias: "Mike",
-    position: "Coordinador de Educación",
-    approvalYear: 2010,
-    extraInfo: "Profesor de teología."
-  },{
-    id: "min-23",
-    churchId: "iglesia-norte-1",
-    name: "Miguel",
-    lastName: "González López",
-    alias: "Mike",
-    position: "Coordinador de Educación",
-    approvalYear: 2010,
-    extraInfo: "Profesor de teología."
-  },{
-    id: "min-24",
-    churchId: "iglesia-norte-1",
-    name: "Miguel",
-    lastName: "González López",
-    alias: "Mike",
-    position: "Coordinador de Educación",
-    approvalYear: 2010,
-    extraInfo: "Profesor de teología."
-  },{
-    id: "min-25",
-    churchId: "iglesia-norte-1",
-    name: "Miguel",
-    lastName: "González López",
-    alias: "Mike",
-    position: "Coordinador de Educación",
-    approvalYear: 2010,
-    extraInfo: "Profesor de teología."
-  },{
-    id: "min-26",
-    churchId: "iglesia-norte-1",
-    name: "Miguel",
-    lastName: "González López",
-    alias: "Mike",
-    position: "Coordinador de Educación",
-    approvalYear: 2010,
-    extraInfo: "Profesor de teología."
-  },{
-    id: "min-27",
-    churchId: "iglesia-norte-1",
-    name: "Miguel",
-    lastName: "González López",
-    alias: "Mike",
-    position: "Coordinador de Educación",
-    approvalYear: 2010,
-    extraInfo: "Profesor de teología."
-  },{
-    id: "min-28",
-    churchId: "iglesia-norte-1",
-    name: "Miguel",
-    lastName: "González López",
-    alias: "Mike",
-    position: "Coordinador de Educación",
-    approvalYear: 2010,
-    extraInfo: "Profesor de teología."
-  },{
-    id: "min-29",
     churchId: "iglesia-norte-1",
     name: "Miguel",
     lastName: "González López",

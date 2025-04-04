@@ -7,7 +7,8 @@ export const getZonas = async (): Promise<Zone[]> => {
   try {
     const response = await apiClient.get('/zonas');
     console.log('Zonas obtenidas:', response.data);
-    return response.data;
+    // Ensure we always return an array
+    return Array.isArray(response.data) ? response.data : [];
   } catch (error) {
     console.error('Error al obtener zonas:', error);
     throw error;
@@ -60,13 +61,14 @@ export const deleteZona = async (id: number): Promise<void> => {
 // Obtener todas las subzonas o por zona ID
 export const getSubzonas = async (zonaId?: number): Promise<Subzone[]> => {
   try {
+    let response;
     if (zonaId) {
-      const response = await apiClient.get(`/subzonas/${zonaId}`);
-      return response.data;
+      response = await apiClient.get(`/subzonas/${zonaId}`);
     } else {
-      const response = await apiClient.get('/subzonas');
-      return response.data;
+      response = await apiClient.get('/subzonas');
     }
+    // Ensure we always return an array
+    return Array.isArray(response.data) ? response.data : [];
   } catch (error) {
     console.error('Error al obtener subzonas:', error);
     throw error;

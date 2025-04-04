@@ -26,7 +26,8 @@ const ZoneSelector: React.FC<ZoneSelectorProps> = ({ selectedSubzoneId }) => {
         setLoading(true);
         const data = await getZonas();
         console.log('Zonas obtenidas:', data);
-        setZonas(data);
+        // Ensure data is an array before setting state
+        setZonas(Array.isArray(data) ? data : []);
         setError(null);
       } catch (error) {
         console.error('Error fetching zonas:', error);
@@ -51,7 +52,8 @@ const ZoneSelector: React.FC<ZoneSelectorProps> = ({ selectedSubzoneId }) => {
           console.log(`Obteniendo subzonas para zona ID: ${selectedZona}`);
           const data = await getSubzonas(parseInt(selectedZona));
           console.log('Subzonas obtenidas:', data);
-          setSubzonas(data);
+          // Ensure data is an array before setting state
+          setSubzonas(Array.isArray(data) ? data : []);
           setError(null);
         } catch (error) {
           console.error('Error fetching subzonas:', error);
@@ -61,6 +63,7 @@ const ZoneSelector: React.FC<ZoneSelectorProps> = ({ selectedSubzoneId }) => {
             title: "Error al cargar subzonas",
             description: "No se pudieron obtener las subzonas. Inténtelo de nuevo más tarde.",
           });
+          setSubzonas([]); // Set empty array on error
         }
       } else {
         setSubzonas([]);
@@ -119,7 +122,8 @@ const ZoneSelector: React.FC<ZoneSelectorProps> = ({ selectedSubzoneId }) => {
           onChange={handleZonaChange}
         >
           <option value="" disabled>Seleccione una zona</option>
-          {zonas.map(zona => (
+          {/* Ensure zonas is always an array before mapping */}
+          {Array.isArray(zonas) && zonas.map(zona => (
             <option key={zona.id} value={zona.id}>
               {zona.nombre}
             </option>
@@ -139,7 +143,8 @@ const ZoneSelector: React.FC<ZoneSelectorProps> = ({ selectedSubzoneId }) => {
             onChange={handleSubzonaChange}
           >
             <option value="" disabled>Seleccione una subzona</option>
-            {subzonas.map(subzona => (
+            {/* Ensure subzonas is always an array before mapping */}
+            {Array.isArray(subzonas) && subzonas.map(subzona => (
               <option key={subzona.id} value={subzona.id}>
                 {subzona.nombre}
               </option>

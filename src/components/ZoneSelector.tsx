@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/select";
 import { 
   fetchZonas, 
-  fetchSubzonas, 
   fetchSubzonasByZona,
   Zona,
   Subzona
@@ -24,7 +23,6 @@ interface ZoneSelectorProps {
 
 const ZoneSelector: React.FC<ZoneSelectorProps> = ({ selectedZoneId, selectedSubzoneId }) => {
   const navigate = useNavigate();
-  const [subzones, setSubzones] = useState<Subzona[]>([]);
   
   // Fetch all zones
   const { data: zones = [], isLoading: isLoadingZones } = useQuery({
@@ -32,23 +30,12 @@ const ZoneSelector: React.FC<ZoneSelectorProps> = ({ selectedZoneId, selectedSub
     queryFn: fetchZonas
   });
 
-  // Fetch all subzones
-  const { data: allSubzones = [] } = useQuery({
-    queryKey: ['subzones'],
-    queryFn: fetchSubzonas
+  // Fetch subzones for the selected zone
+  const { data: subzones = [], isLoading: isLoadingSubzones } = useQuery({
+    queryKey: ['subzones', selectedZoneId],
+    queryFn: () => selectedZoneId ? fetchSubzonasByZona(parseInt(selectedZoneId)) : [],
+    enabled: !!selectedZoneId
   });
-
-  // When selectedZoneId changes, filter subzones
-  useEffect(() => {
-    if (selectedZoneId) {
-      const filteredSubzones = allSubzones.filter(
-        subzone => subzone.zona_id === parseInt(selectedZoneId)
-      );
-      setSubzones(filteredSubzones);
-    } else {
-      setSubzones([]);
-    }
-  }, [selectedZoneId, allSubzones]);
 
   const handleZoneChange = (zoneId: string) => {
     if (zoneId) {
@@ -89,7 +76,7 @@ const ZoneSelector: React.FC<ZoneSelectorProps> = ({ selectedZoneId, selectedSub
         </Select>
       </div>
       
-      {selectedZoneId && subzones.length > 0 && (
+      {selectedZoneId && subzones.length > 0 && !isLoadingSubzones && (
         <div className="w-full">
           <label htmlFor="subzone-select" className="block text-sm font-medium text-gray-700 mb-1">
             Seleccionar Subzona

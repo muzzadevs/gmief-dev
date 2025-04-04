@@ -1,24 +1,31 @@
-
 const express = require('express');
 const cors = require('cors');
 const db = require('./dbConnection');
 const path = require('path');
+const config = require('./config');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = config.PORT;
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
 
+// Función para manejar errores de las consultas
+const handleQueryError = (error, res, errorMessage) => {
+  console.error(errorMessage, error);
+  res.status(500).json({ error: errorMessage });
+};
+
 // API Endpoints
 app.get('/api/zonas', async (req, res) => {
   try {
+    console.log('Consultando zonas en la base de datos...');
     const [rows] = await db.query('SELECT * FROM zonas');
+    console.log(`Zonas recuperadas: ${rows.length}`);
     res.json(rows);
   } catch (error) {
-    console.error('Error fetching zonas:', error);
-    res.status(500).json({ error: 'Error al obtener las zonas' });
+    handleQueryError(error, res, 'Error al obtener las zonas');
   }
 });
 
@@ -190,7 +197,7 @@ app.get('/api/cargos', async (req, res) => {
 });
 
 // Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
+if (config.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../dist')));
   
   app.get('*', (req, res) => {
@@ -198,6 +205,13 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+// Manejador global de errores
+app.use((err, req, res, next) => {
+  console.error('Error en el servidor:', err);
+  res.status(500).json({ error: 'Error interno del servidor' });
+});
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT} in ${config.NODE_ENV} mode`);
+  console.log('Database connection established');
 });

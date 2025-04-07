@@ -1,13 +1,16 @@
 
+"use client";
+
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Region, regions } from '../lib/mockData';
+import "./SpainMap.css";
 
 const SpainMap: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
   const [hoveredRegion, setHoveredRegion] = useState<Region | null>(null);
 
   useEffect(() => {
@@ -159,7 +162,7 @@ const SpainMap: React.FC = () => {
       // Check which region was clicked
       for (const region of regions) {
         if (isPointInRegion(x, y, region)) {
-          navigate(`/region/${region.id}`);
+          router.push(`/region/${region.id}`);
           break;
         }
       }
@@ -179,7 +182,7 @@ const SpainMap: React.FC = () => {
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('click', handleClick);
     };
-  }, [navigate, hoveredRegion]);
+  }, [router, hoveredRegion]);
 
   return (
     <div ref={containerRef} className="spain-map-container">

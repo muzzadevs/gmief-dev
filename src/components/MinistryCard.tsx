@@ -1,9 +1,9 @@
 
-import React from 'react';
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Ministry } from '../lib/mockData';
-import { User, Calendar, BookOpen, Info } from 'lucide-react';
-import { Button } from "@/components/ui/button";
+"use client";
+
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Ministry } from '@/lib/mockData';
 import MinistryDetailsModal from './MinistryDetailsModal';
 
 interface MinistryCardProps {
@@ -11,71 +11,37 @@ interface MinistryCardProps {
 }
 
 const MinistryCard: React.FC<MinistryCardProps> = ({ ministry }) => {
-  const [showDetails, setShowDetails] = React.useState(false);
-  
-  // Default avatar URL
-  const avatarUrl = ministry.photoUrl || '/placeholder.svg';
+  const [showDetails, setShowDetails] = useState(false);
 
   return (
     <>
-      <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
-        <CardHeader className="p-0">
-          <div className="bg-primary p-4 flex justify-center">
-            <div className="w-24 h-24 rounded-full overflow-hidden bg-white border-4 border-white shadow-md">
-              <img 
-                src={avatarUrl} 
-                alt={`Foto de ${ministry.name}`} 
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
+      <Card 
+        className="overflow-hidden transition-all hover:shadow-md cursor-pointer" 
+        onClick={() => setShowDetails(true)}
+      >
+        <CardHeader className="p-4 pb-2 bg-primary/5">
+          <CardTitle className="text-lg font-medium text-primary">
+            {ministry.role}
+          </CardTitle>
         </CardHeader>
-        <CardContent className="p-4 space-y-3">
-          <div className="text-center">
-            <h3 className="font-bold text-lg text-gray-800">
-              {ministry.name} {ministry.lastName}
-            </h3>
-            {ministry.alias && (
-              <p className="text-sm text-gray-500 italic">"{ministry.alias}"</p>
-            )}
-          </div>
-          
-          <div className="space-y-2 pt-2">
-            <div className="flex items-center">
-              <User className="h-4 w-4 text-primary mr-2" />
-              <span className="text-sm">{ministry.position}</span>
-            </div>
-            
-            <div className="flex items-center">
-              <Calendar className="h-4 w-4 text-primary mr-2" />
-              <span className="text-sm">Aprobado en {ministry.approvalYear}</span>
-            </div>
-            
-            {ministry.extraInfo && (
-              <div className="flex items-start pt-1">
-                <BookOpen className="h-4 w-4 text-primary mr-2 mt-0.5" />
-                <span className="text-sm text-gray-600">{ministry.extraInfo}</span>
-              </div>
-            )}
-            
-            <div className="pt-3">
-              <Button 
-                variant="outline" 
-                className="w-full" 
-                onClick={() => setShowDetails(true)}
-              >
-                <Info className="mr-2 h-4 w-4" />
-                Más Info
-              </Button>
-            </div>
+        <CardContent className="p-4 pt-3">
+          <div className="space-y-2">
+            <p className="font-medium text-gray-800">
+              {ministry.name}
+            </p>
+            <p className="text-sm text-gray-600">
+              {ministry.contactPhone && `Tel: ${ministry.contactPhone}`}
+              {ministry.contactEmail && ministry.contactPhone && ' | '}
+              {ministry.contactEmail && `Email: ${ministry.contactEmail}`}
+            </p>
           </div>
         </CardContent>
       </Card>
-      
-      <MinistryDetailsModal 
-        ministry={ministry} 
-        open={showDetails} 
-        onOpenChange={setShowDetails} 
+
+      <MinistryDetailsModal
+        ministry={ministry}
+        open={showDetails}
+        onClose={() => setShowDetails(false)}
       />
     </>
   );

@@ -1,6 +1,8 @@
 
+"use client";
+
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { regions } from '../lib/mockData';
 
 interface RegionSelectorProps {
@@ -8,12 +10,12 @@ interface RegionSelectorProps {
 }
 
 const RegionSelector: React.FC<RegionSelectorProps> = ({ selectedRegionId }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const regionId = e.target.value;
     if (regionId) {
-      navigate(`/region/${regionId}`);
+      router.push(`/region/${regionId}`);
     }
   };
 
